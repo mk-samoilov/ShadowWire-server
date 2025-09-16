@@ -13,14 +13,15 @@
 | **verify_token**  | STR  | Token for verification account |
 
 ### Messages Table (for temporary storage until reading)
-| Column         | Type                                  | Description                                            |
-|----------------|---------------------------------------|--------------------------------------------------------|
-| **id**         | INT                                   | Message ID                                             |
-| **chat_uuid**  | STR                                   | Chat UUID                                              |
-| **sender**     | STR                                   | Sender Username/Nickname                               |
-| **percipient** | STR                                   | Percipient Username/Nickname                           |
-| ** payload**   | BYTES                                 | Bytes Payload (encoded text/images)                    |
-| **pds**        | TUPLE[BOOL(sender), BOOL(percipient)] | Consent to delete message from database (upon receipt) |
+| Column         | Type                                   | Description                                            |
+|----------------|----------------------------------------|--------------------------------------------------------|
+| **id**         | INT                                    | Message ID                                             |
+| **chat_uuid**  | STR                                    | Chat UUID                                              |
+| **sender**     | STR                                    | Sender Username/Nickname                               |
+| **percipient** | STR                                    | Percipient Username/Nickname                           |
+| **payload**    | BYTES                                  | Bytes Payload (encoded text/images)                    |
+| **pds**        | TUPLE[BOOL(sender), BOOL(percipient)]  | Consent to delete message from database (upon receipt) |
+| **created_at** | STR                                    | Created at                                             |
 
 <br>
 
