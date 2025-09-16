@@ -4,11 +4,11 @@ import logging
 
 from pathlib import Path
 
-from .stg_api import MainApplicationStorage
+from ..db_api import MainApplicationStorage
 
 
 exit_codes_file = str(Path(__file__).resolve().parent) + "/transactions_exit_codes.json"
-exit_codes = json.loads(open(file=error_codes_file, mode="r", encoding="UTF-8").read())
+exit_codes = json.loads(open(file=exit_codes_file, mode="r", encoding="UTF-8").read())
 
 
 def reg_account(stg: MainApplicationStorage, username: str, password: str) -> tuple[bytes, str]:

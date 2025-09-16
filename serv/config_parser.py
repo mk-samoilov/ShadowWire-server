@@ -14,7 +14,8 @@ def load_config(file: str):
         config["paths"] = \
             {
                 "storage_dir": str(CORE_DIR_PATH.parent) + "/data/storage",
-                "logs_dir": str(CORE_DIR_PATH.parent) + "/logs"
+                "logs_dir": str(CORE_DIR_PATH.parent) + "/logs",
+                "plugins_dir": str(CORE_DIR_PATH) + "/plugins"
             }
 
         config["logging"] = \

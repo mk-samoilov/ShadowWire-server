@@ -10,7 +10,7 @@ from .tcp_server import TCPServer
 
 from .client_request_handler.cr_handler import cr_handler as crh
 from .config_parser import load_config
-from .stg_api import MainApplicationStorage
+from .db_api import MainApplicationStorage
 
 
 class ServiceCore:
@@ -18,7 +18,7 @@ class ServiceCore:
 
     DEFAULT_CONFIG_FILE = DATA_DIR + "/app_config.conf"
     VERSION_FILE = DATA_DIR + "/version"
-    PROTOCOL_VERSION_FILE = DATA_DIR + "/dh_tcp_protocol_version"
+    PROTOCOL_VERSION_FILE = DATA_DIR + "/crypt_tcp_protocol_version"
 
     def __init__(self, args):
         self.args = args
@@ -49,6 +49,7 @@ class ServiceCore:
     def _make_dirs(self):
         os.makedirs(self.conf["paths"]["storage_dir"], exist_ok=True)
         os.makedirs(self.conf["paths"]["logs_dir"], exist_ok=True)
+        os.makedirs(self.conf["paths"]["plugins_dir"], exist_ok=True)
 
     def __setup_logging__(self):
         log_filename = f"{self.conf['paths']['logs_dir']}/log_{datetime.now().strftime('%Y-%m-%d')}.log"

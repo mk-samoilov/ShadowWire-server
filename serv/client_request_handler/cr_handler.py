@@ -3,7 +3,7 @@ from pathlib import Path
 
 import json
 
-from .stg_api import MainApplicationStorage
+from ..db_api import MainApplicationStorage
 
 
 def add_request_uuid_to_response(response_data: bytes, request_uuid: str = None) -> bytes:
