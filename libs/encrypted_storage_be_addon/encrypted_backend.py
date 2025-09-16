@@ -5,7 +5,7 @@ import hashlib
 from pathlib import Path
 from typing import Optional, Dict, Union, Any
 
-from application.libs.pycrypter.core import Crypter
+from libs.pycrypter.core import Crypter
 
 
 class EncryptedStorageBackendError(Exception):
@@ -13,7 +13,7 @@ class EncryptedStorageBackendError(Exception):
 
 
 class EncryptedStorageBackend:
-    MASTER_KEY = "master_key_v0.2.7".encode()
+    MASTER_KEY = "master_key_16_09_2025_v1_w78p3p2druynk1hl0".encode()
     
     def __init__(self, storage_path: Path, storage_name: str):
         self.storage_path = storage_path / f"stg_{storage_name}.stg"
