@@ -37,9 +37,9 @@ class ServiceCore:
         self.__setup_signal_handlers__()
         self._stopping = False
 
-    def load_version(self):
+    def load_version(self) -> (str, int):
         with open(file=self.VERSION_FILE, mode="r", encoding="UTF-8") as vers_file:
-            vers = vers_file.read()
+            vers = str(vers_file.read())
 
         with open(file=self.PROTOCOL_VERSION_FILE, mode="r", encoding="UTF-8") as proto_vers_file:
             proto_vers = int(proto_vers_file.read())
