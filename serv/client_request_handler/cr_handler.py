@@ -3,7 +3,7 @@ from pathlib import Path
 
 import json
 
-from ..db_api import MainApplicationStorage
+from ..db_api import MainApplicationStorageAPI
 
 
 def add_request_uuid_to_response(response_data: bytes, request_uuid: str = None) -> bytes:
@@ -28,7 +28,7 @@ def add_request_uuid_to_response(response_data: bytes, request_uuid: str = None)
         return response_data
 
 
-def cr_handler(transaction_code: str, pkg: bytes, stg: MainApplicationStorage) -> (bytes, str):
+def cr_handler(transaction_code: str, pkg: bytes, stg: MainApplicationStorageAPI) -> (bytes, str):
     request_uuid = None
 
     try:
@@ -61,4 +61,3 @@ def cr_handler(transaction_code: str, pkg: bytes, stg: MainApplicationStorage) -
             response_data = json.dumps((result, None)).encode()
 
             return add_request_uuid_to_response(response_data, request_uuid), "ERROR:RESPONSE"
-

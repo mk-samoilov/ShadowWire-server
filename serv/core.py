@@ -10,7 +10,7 @@ from .tcp_server import TCPServer
 
 from .client_request_handler.cr_handler import cr_handler as crh
 from .config_parser import load_config
-from .db_api import MainApplicationStorage
+from .db_api import MainApplicationStorageAPI
 
 
 class ServiceCore:
@@ -18,7 +18,8 @@ class ServiceCore:
 
     DEFAULT_CONFIG_FILE = DATA_DIR + "/app_config.conf"
     VERSION_FILE = DATA_DIR + "/version"
-    PROTOCOL_VERSION_FILE = DATA_DIR + "/crypt_tcp_protocol_version"
+    CRYPT_TCP_PROTOCOL_VERSION_FILE = DATA_DIR + "/crypt_tcp_protocol_version"
+    CRYPT_DB_PROTOCOL_VERSION_FILE = DATA_DIR + "/crypt_db_protocol_version"
 
     def __init__(self, args):
         self.args = args
@@ -37,14 +38,17 @@ class ServiceCore:
         self.__setup_signal_handlers__()
         self._stopping = False
 
-    def load_version(self) -> (str, int):
+    def load_version(self) -> (str, int, int):
         with open(file=self.VERSION_FILE, mode="r", encoding="UTF-8") as vers_file:
-            vers = str(vers_file.read())
+            vers = str(vers_file.readline(0))
 
-        with open(file=self.PROTOCOL_VERSION_FILE, mode="r", encoding="UTF-8") as proto_vers_file:
-            proto_vers = int(proto_vers_file.read())
+        with open(file=self.CRYPT_TCP_PROTOCOL_VERSION_FILE, mode="r", encoding="UTF-8") as proto_vers_file_tcp:
+            crypt_tcp_proto_vers = int(proto_vers_file_tcp.readline(0))
 
-        return vers, proto_vers
+        with open(file=self.CRYPT_DB_PROTOCOL_VERSION_FILE, mode="r", encoding="UTF-8") as proto_vers_file_db:
+            crypt_db_proto_vers = int(proto_vers_file_db.readline(0))
+
+        return vers, crypt_tcp_proto_vers, crypt_db_proto_vers
 
     def _make_dirs(self):
         os.makedirs(self.conf["paths"]["storage_dir"], exist_ok=True)
@@ -64,7 +68,7 @@ class ServiceCore:
         )
 
     def __setup_storage__(self):
-        self.storage = MainApplicationStorage(
+        self.storage = MainApplicationStorageAPI(
             storage_path=self.conf["paths"]["storage_dir"]
         )
 

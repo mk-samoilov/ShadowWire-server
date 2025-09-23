@@ -11,7 +11,7 @@ from libs.pystorage import *
 from libs.encrypted_storage_be_addon import EncryptedStorageBackend
 
 
-class MainApplicationStorage:
+class MainApplicationStorageAPI:
     KEYS_PATH = str(Path(__file__).resolve().parent.parent.parent) + "/data/keys"
 
     KEYS_TO_MAKE = [
@@ -88,8 +88,7 @@ class MainApplicationStorage:
             "user_id": int(self._get_record_id(table_, id_key="user_id")),
             "username": str(username),
             "password_hash": str(password_hash),
-            "created_at": str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
-            "_account_is_active": True
+            "created_at": str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         })
 
         table_.add_record(record=new_record)

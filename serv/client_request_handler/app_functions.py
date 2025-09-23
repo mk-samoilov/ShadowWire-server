@@ -4,14 +4,14 @@ import logging
 
 from pathlib import Path
 
-from ..db_api import MainApplicationStorage
+from ..db_api import MainApplicationStorageAPI
 
 
 exit_codes_file = str(Path(__file__).resolve().parent) + "/transactions_exit_codes.json"
 exit_codes = json.loads(open(file=exit_codes_file, mode="r", encoding="UTF-8").read())
 
 
-def reg_account(stg: MainApplicationStorage, username: str, password: str) -> tuple[bytes, str]:
+def reg_account(stg: MainApplicationStorageAPI, username: str, password: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = str(username)
     password = str(password)
@@ -33,7 +33,7 @@ def reg_account(stg: MainApplicationStorage, username: str, password: str) -> tu
     return json.dumps((result, None)).encode(), "REG_ACCOUNT:RESPONSE"
 
 
-def login(stg: MainApplicationStorage, username: str, password: str) -> tuple[bytes, str]:
+def login(stg: MainApplicationStorageAPI, username: str, password: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = str(username)
     password = str(password)
@@ -62,7 +62,7 @@ def login(stg: MainApplicationStorage, username: str, password: str) -> tuple[by
     return json.dumps((result, None)).encode(), "LOGIN:RESPONSE"
 
 
-def change_username(stg: MainApplicationStorage, token: str, new_username: str) -> tuple[bytes, str]:
+def change_username(stg: MainApplicationStorageAPI, token: str, new_username: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -87,7 +87,7 @@ def change_username(stg: MainApplicationStorage, token: str, new_username: str) 
     return json.dumps((result, None)).encode(), "CHANGE_NICKNAME:RESPONSE"
 
 
-def change_password(stg: MainApplicationStorage, token: str, old_password: str, new_password: str) -> tuple[bytes, str]:
+def change_password(stg: MainApplicationStorageAPI, token: str, old_password: str, new_password: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -115,7 +115,7 @@ def change_password(stg: MainApplicationStorage, token: str, old_password: str, 
     return json.dumps((result, None)).encode(), "CHANGE_PASSWORD:RESPONSE"
 
 
-def create_chat(stg: MainApplicationStorage, token: str, participants: list[str], name: str = None) -> tuple[
+def create_chat(stg: MainApplicationStorageAPI, token: str, participants: list[str], name: str = None) -> tuple[
     bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
@@ -145,7 +145,7 @@ def create_chat(stg: MainApplicationStorage, token: str, participants: list[str]
     return json.dumps((result, None)).encode(), "CREATE_CHAT:RESPONSE"
 
 
-def delete_chat(stg: MainApplicationStorage, token: str, chat_id: int) -> tuple[bytes, str]:
+def delete_chat(stg: MainApplicationStorageAPI, token: str, chat_id: int) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -174,7 +174,7 @@ def delete_chat(stg: MainApplicationStorage, token: str, chat_id: int) -> tuple[
     return json.dumps((result, None)).encode(), "DELETE_CHAT:RESPONSE"
 
 
-def add_participant_to_chat(stg: MainApplicationStorage, token: str, chat_id: int, username_to_add: str) -> tuple[
+def add_participant_to_chat(stg: MainApplicationStorageAPI, token: str, chat_id: int, username_to_add: str) -> tuple[
     bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
@@ -208,7 +208,7 @@ def add_participant_to_chat(stg: MainApplicationStorage, token: str, chat_id: in
     return json.dumps((result, None)).encode(), "ADD_PARTICIPANT_TO_CHAT:RESPONSE"
 
 
-def remove_participant_from_chat(stg: MainApplicationStorage, token: str, chat_id: int, username_to_remove: str) -> \
+def remove_participant_from_chat(stg: MainApplicationStorageAPI, token: str, chat_id: int, username_to_remove: str) -> \
 tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
@@ -240,7 +240,7 @@ tuple[bytes, str]:
     return json.dumps((result, None)).encode(), "REMOVE_PARTICIPANT_FROM_CHAT:RESPONSE"
 
 
-def get_chat_by_id(stg: MainApplicationStorage, token: str, chat_id: int) -> tuple[bytes, str]:
+def get_chat_by_id(stg: MainApplicationStorageAPI, token: str, chat_id: int) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -267,7 +267,7 @@ def get_chat_by_id(stg: MainApplicationStorage, token: str, chat_id: int) -> tup
     return json.dumps((result, None)).encode(), "GET_CHAT_BY_ID:RESPONSE"
 
 
-def get_user_chats(stg: MainApplicationStorage, token: str) -> tuple[bytes, str]:
+def get_user_chats(stg: MainApplicationStorageAPI, token: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -290,7 +290,7 @@ def get_user_chats(stg: MainApplicationStorage, token: str) -> tuple[bytes, str]
     return json.dumps((result, None)).encode(), "GET_USER_CHATS:RESPONSE"
 
 
-def change_chat_name(stg: MainApplicationStorage, token: str, chat_id: int, new_name: str) -> tuple[bytes, str]:
+def change_chat_name(stg: MainApplicationStorageAPI, token: str, chat_id: int, new_name: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -320,7 +320,7 @@ def change_chat_name(stg: MainApplicationStorage, token: str, chat_id: int, new_
     return json.dumps((result, None)).encode(), "CHANGE_CHAT_NAME:RESPONSE"
 
 
-def delete_message(stg: MainApplicationStorage, token: str, m_id: int) -> tuple[bytes, str]:
+def delete_message(stg: MainApplicationStorageAPI, token: str, m_id: int) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
     if username is None:
@@ -342,7 +342,7 @@ def delete_message(stg: MainApplicationStorage, token: str, m_id: int) -> tuple[
     return json.dumps((result, None)).encode(), "DELETE_MESSAGE:RESPONSE"
 
 
-def edit_message(stg: MainApplicationStorage, token: str, m_id: int, new_payload: str) -> tuple[bytes, str]:
+def edit_message(stg: MainApplicationStorageAPI, token: str, m_id: int, new_payload: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
     if username is None:
@@ -364,7 +364,7 @@ def edit_message(stg: MainApplicationStorage, token: str, m_id: int, new_payload
     return json.dumps((result, None)).encode(), "EDIT_MESSAGE:RESPONSE"
 
 
-def send_message(stg: MainApplicationStorage, token: str, chat_id: int, payload: str) -> tuple[bytes, str]:
+def send_message(stg: MainApplicationStorageAPI, token: str, chat_id: int, payload: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -390,7 +390,7 @@ def send_message(stg: MainApplicationStorage, token: str, chat_id: int, payload:
     return json.dumps((result, None)).encode(), "SEND_MESSAGE_TOKEN:RESPONSE"
 
 
-def read_messages(stg: MainApplicationStorage, token: str) -> tuple[bytes, str]:
+def read_messages(stg: MainApplicationStorageAPI, token: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
     if username is None:
@@ -425,7 +425,7 @@ def read_messages(stg: MainApplicationStorage, token: str) -> tuple[bytes, str]:
     return json.dumps((result, None)).encode(), "READ_MESSAGES_TOKEN:RESPONSE"
 
 
-def verify_token(stg: MainApplicationStorage, token: str) -> tuple[bytes, str]:
+def verify_token(stg: MainApplicationStorageAPI, token: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -441,7 +441,7 @@ def verify_token(stg: MainApplicationStorage, token: str) -> tuple[bytes, str]:
         (result, {"username": username} if _exit_code_s == "ok" else None)).encode(), "VERIFY_TOKEN:RESPONSE"
 
 
-def delete_token(stg: MainApplicationStorage, token: str, r_token_id: str) -> tuple[bytes, str]:
+def delete_token(stg: MainApplicationStorageAPI, token: str, r_token_id: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
@@ -464,7 +464,7 @@ def delete_token(stg: MainApplicationStorage, token: str, r_token_id: str) -> tu
     return json.dumps((result, None)).encode(), "DELETE_TOKEN:RESPONSE"
 
 
-def get_user_tokens(stg: MainApplicationStorage, token: str) -> tuple[bytes, str]:
+def get_user_tokens(stg: MainApplicationStorageAPI, token: str) -> tuple[bytes, str]:
     _exit_code_s: str | None = None
     username = stg.validate_token(token)
 
