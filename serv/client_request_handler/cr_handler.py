@@ -3,7 +3,7 @@ from pathlib import Path
 
 import json
 
-from ..db_api import MainApplicationStorageAPI
+from ..db_api import MainAppDatabaseAPI
 
 
 def add_request_uuid_to_response(response_data: bytes, request_uuid: str = None) -> bytes:
@@ -28,7 +28,7 @@ def add_request_uuid_to_response(response_data: bytes, request_uuid: str = None)
         return response_data
 
 
-def cr_handler(transaction_code: str, pkg: bytes, stg: MainApplicationStorageAPI) -> (bytes, str):
+def cr_handler(transaction_code: str, pkg: bytes, db_api: MainAppDatabaseAPI) -> (bytes, str):
     request_uuid = None
 
     try:
@@ -49,7 +49,7 @@ def cr_handler(transaction_code: str, pkg: bytes, stg: MainApplicationStorageAPI
 
         try:
             module = import_module(name=".app_functions", package=__package__)
-            response_data, response_type = getattr(module, transaction_code.lower())(stg=stg, **pkg_data)
+            response_data, response_type = getattr(module, transaction_code.lower())(db_api=db_api, **pkg_data)
             return add_request_uuid_to_response(response_data, request_uuid), response_type
 
         except AttributeError:

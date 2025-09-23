@@ -10,7 +10,7 @@ from .tcp_server import TCPServer
 
 from .client_request_handler.cr_handler import cr_handler as crh
 from .config_parser import load_config
-from .db_api import MainApplicationStorageAPI
+from .db_api import MainAppDatabaseAPI
 
 
 class ServiceCore:
@@ -34,7 +34,7 @@ class ServiceCore:
 
         self.c_tcp_serv = TCPServer(conf=self.conf, request_handle_func=crh)
 
-        self.__setup_storage__()
+        self.__setup_db__()
         self.__setup_signal_handlers__()
         self._stopping = False
 
@@ -51,7 +51,6 @@ class ServiceCore:
         return vers, crypt_tcp_proto_vers, crypt_db_proto_vers
 
     def _make_dirs(self):
-        os.makedirs(self.conf["paths"]["storage_dir"], exist_ok=True)
         os.makedirs(self.conf["paths"]["logs_dir"], exist_ok=True)
         os.makedirs(self.conf["paths"]["plugins_dir"], exist_ok=True)
 
@@ -67,14 +66,12 @@ class ServiceCore:
             ]
         )
 
-    def __setup_storage__(self):
-        self.storage = MainApplicationStorageAPI(
-            storage_path=self.conf["paths"]["storage_dir"]
-        )
+    def __setup_db__(self):
+        self.db_api = MainAppDatabaseAPI()
 
     def _define_cr_server(self):
         def request_handler_constructor(transaction_code, pkg):
-            return crh(transaction_code=transaction_code, pkg=pkg, stg=self.storage)
+            return crh(transaction_code=transaction_code, pkg=pkg, db_api=self.db_api)
 
         self.c_tcp_serv.request_handle_func = request_handler_constructor
         self.c_tcp_serv.title_ = "CRH"

@@ -13,7 +13,6 @@ def load_config(file: str):
     if not os.path.exists(file):
         config["paths"] = \
             {
-                "storage_dir": str(CORE_DIR_PATH.parent) + "/data/storage",
                 "logs_dir": str(CORE_DIR_PATH.parent) + "/logs",
                 "plugins_dir": str(CORE_DIR_PATH) + "/plugins"
             }

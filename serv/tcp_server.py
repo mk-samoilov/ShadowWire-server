@@ -70,7 +70,7 @@ class ClientConnection:
 
         except ConnectionResetError:
             self.stop()
-        except Exception as e:
+        except Exception:
             logging.exception(
                 f"{'[Server ' + self.server_instance.title_ + '] - ' if self.server_instance.title_ else ''}" + \
                 f"Key exchange failed for client {self.client_address[0]}:")
@@ -114,12 +114,12 @@ class ClientConnection:
                 except ConnectionResetError:
                     break
 
-                except Exception as e:
+                except Exception:
                     if self.running:
                         logging.exception(f"Error handling client {self.client_address[0]}")
                     break
 
-        except Exception as e:
+        except Exception:
             logging.exception(f"Error in client handler for {self.client_address[0]}")
         finally:
             self.close_connection()
@@ -150,7 +150,7 @@ class ClientConnection:
                 f"{'[Server ' + self.server_instance.title_ + '] - ' if self.server_instance.title_ else ''}" + \
                 f"Client {self.client_address[0]} disconnected")
 
-        except Exception as e:
+        except Exception:
             logging.exception(
                 f"{'[Server ' + self.server_instance.title_ + '] - ' if self.server_instance.title_ else ''}" + \
                 f"Error closing connection for client {self.client_address[0]}:")
@@ -196,7 +196,7 @@ class TCPServer:
             while self.handling:
                 self.main_loop()
 
-        except Exception as e:
+        except Exception:
             logging.exception(
                 f"{'[Server ' + self.title_ + '] - ' if self.title_ else ''}Error in main server loop:")
 
@@ -220,7 +220,7 @@ class TCPServer:
         except socket.timeout:
             pass
 
-        except Exception as e:
+        except Exception:
             if self.handling:
                 logging.exception(
                     f"Server '{self.title_ + '\' ' if self.title_ else ' '}- Error accepting client connection:")
@@ -237,7 +237,7 @@ class TCPServer:
         if hasattr(self, "socket") and self.socket:
             try:
                 self.socket.close()
-            except Exception as e:
+            except Exception:
                 logging.exception(f"Error closing server '{self.title_ + ' ' if self.title_ else ''} socket:")
 
         logging.info(f"Server '{self.title_ + '\' ' if self.title_ else ''}shut down")
