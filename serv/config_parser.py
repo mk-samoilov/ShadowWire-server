@@ -17,6 +17,15 @@ def load_config(file: str):
                 "plugins_dir": str(CORE_DIR_PATH) + "/plugins"
             }
 
+        config["db"] = \
+            {
+                "role": "<development_user>",
+                "role_passwd": "<development_user_passwd>",
+                "db_host": "localhost",
+                "db_port": 5432,
+                "db_name": "shadow_wire_db"
+            }
+
         config["logging"] = \
             {
                 "level": "DEBUG"
