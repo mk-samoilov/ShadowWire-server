@@ -19,8 +19,8 @@ def load_config(file: str):
 
         config["db"] = \
             {
-                "role": "<development_user>",
-                "role_passwd": "<development_user_passwd>",
+                "role": "< change these field in config file>",
+                "role_passwd": "< change these field in config file >",
                 "db_host": "localhost",
                 "db_port": 5432,
                 "db_name": "shadow_wire_db"

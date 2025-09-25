@@ -17,6 +17,7 @@ class ServiceCore:
     DATA_DIR = str(Path(__file__).resolve().parent.parent) + "/data"
 
     DEFAULT_CONFIG_FILE = DATA_DIR + "/app_config.conf"
+
     VERSION_FILE = DATA_DIR + "/vers/server_version"
     CRYPT_TCP_PROTOCOL_VERSION_FILE = DATA_DIR + "/vers/crypt_tcp_protocol_version"
     CRYPT_DB_PROTOCOL_VERSION_FILE = DATA_DIR + "/vers/crypt_db_protocol_version"
@@ -28,9 +29,10 @@ class ServiceCore:
         self._make_dirs()
         self.__setup_logging__()
 
-        self.version, self.protocol_version = self.load_version()
+        self.version, self.crypt_tcp_protocol_version, self.crypt_db_protocol_version = self.load_version()
 
-        logging.info(f"Service core initialized [{self.version} p{self.protocol_version}]")
+        logging.info(f"Service core initialized [{self.version} " + \
+                     f"tcp_p{self.crypt_tcp_protocol_version} db_p{self.crypt_db_protocol_version}]")
 
         self.c_tcp_serv = TCPServer(conf=self.conf, request_handle_func=crh)
 
