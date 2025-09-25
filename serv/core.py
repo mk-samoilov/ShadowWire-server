@@ -17,9 +17,9 @@ class ServiceCore:
     DATA_DIR = str(Path(__file__).resolve().parent.parent) + "/data"
 
     DEFAULT_CONFIG_FILE = DATA_DIR + "/app_config.conf"
-    VERSION_FILE = DATA_DIR + "/version"
-    CRYPT_TCP_PROTOCOL_VERSION_FILE = DATA_DIR + "/crypt_tcp_protocol_version"
-    CRYPT_DB_PROTOCOL_VERSION_FILE = DATA_DIR + "/crypt_db_protocol_version"
+    VERSION_FILE = DATA_DIR + "/vers/server_version"
+    CRYPT_TCP_PROTOCOL_VERSION_FILE = DATA_DIR + "/vers/crypt_tcp_protocol_version"
+    CRYPT_DB_PROTOCOL_VERSION_FILE = DATA_DIR + "/vers/crypt_db_protocol_version"
 
     def __init__(self, args):
         self.args = args
