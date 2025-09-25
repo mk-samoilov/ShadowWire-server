@@ -4,7 +4,11 @@ import configparser
 import os
 
 
-CORE_DIR_PATH = Path(__file__).resolve().parent
+CORE_DIR = Path(__file__).resolve().parent
+
+DATA_DIR = str(Path(__file__).resolve().parent.parent) + "/data"
+
+DEFAULT_CONFIG_FILE = DATA_DIR + "/app_config.conf"
 
 
 def load_config(file: str):
@@ -13,8 +17,8 @@ def load_config(file: str):
     if not os.path.exists(file):
         config["paths"] = \
             {
-                "logs_dir": str(CORE_DIR_PATH.parent) + "/logs",
-                "plugins_dir": str(CORE_DIR_PATH) + "/plugins"
+                "logs_dir": str(CORE_DIR.parent) + "/logs",
+                "plugins_dir": str(CORE_DIR) + "/plugins"
             }
 
         config["db"] = \
@@ -44,3 +48,14 @@ def load_config(file: str):
         config.read(file)
 
     return config
+
+
+def gen_config_util(args):
+    config_file_path = args.config if args.config else DEFAULT_CONFIG_FILE
+
+    if not os.path.exists(config_file_path):
+        load_config(file=config_file_path)
+        print("configuration file generated")
+
+    else:
+        print("error: configuration file already exists")

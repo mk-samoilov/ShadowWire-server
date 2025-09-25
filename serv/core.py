@@ -13,23 +13,37 @@ from .config_parser import load_config
 from .db_api import MainAppDatabaseAPI
 
 
+DATA_DIR = str(Path(__file__).resolve().parent.parent) + "/data"
+
+DEFAULT_CONFIG_FILE = DATA_DIR + "/app_config.conf"
+
+VERSION_FILE = DATA_DIR + "/vers/server_version"
+CRYPT_TCP_PROTOCOL_VERSION_FILE = DATA_DIR + "/vers/crypt_tcp_protocol_version"
+CRYPT_DB_PROTOCOL_VERSION_FILE = DATA_DIR + "/vers/crypt_db_protocol_version"
+
+
+def load_version() -> (str, int, int):
+    with open(file=VERSION_FILE, mode="r", encoding="UTF-8") as vers_file:
+        vers = str(vers_file.readline(0))
+
+    with open(file=CRYPT_TCP_PROTOCOL_VERSION_FILE, mode="r", encoding="UTF-8") as proto_vers_file_tcp:
+        crypt_tcp_proto_vers = int(proto_vers_file_tcp.readline(0))
+
+    with open(file=CRYPT_DB_PROTOCOL_VERSION_FILE, mode="r", encoding="UTF-8") as proto_vers_file_db:
+        crypt_db_proto_vers = int(proto_vers_file_db.readline(0))
+
+    return vers, crypt_tcp_proto_vers, crypt_db_proto_vers
+
+
 class ServiceCore:
-    DATA_DIR = str(Path(__file__).resolve().parent.parent) + "/data"
-
-    DEFAULT_CONFIG_FILE = DATA_DIR + "/app_config.conf"
-
-    VERSION_FILE = DATA_DIR + "/vers/server_version"
-    CRYPT_TCP_PROTOCOL_VERSION_FILE = DATA_DIR + "/vers/crypt_tcp_protocol_version"
-    CRYPT_DB_PROTOCOL_VERSION_FILE = DATA_DIR + "/vers/crypt_db_protocol_version"
-
     def __init__(self, args):
         self.args = args
-        self.conf = load_config(file=args.config if args.config else self.DEFAULT_CONFIG_FILE)
+        self.conf = load_config(file=args.config if args.config else DEFAULT_CONFIG_FILE)
 
         self._make_dirs()
         self.__setup_logging__()
 
-        self.version, self.crypt_tcp_protocol_version, self.crypt_db_protocol_version = self.load_version()
+        self.version, self.crypt_tcp_protocol_version, self.crypt_db_protocol_version = load_version()
 
         logging.info(f"Service core initialized [{self.version} " + \
                      f"tcp_p{self.crypt_tcp_protocol_version} db_p{self.crypt_db_protocol_version}]")
@@ -39,18 +53,6 @@ class ServiceCore:
         self.__setup_db__()
         self.__setup_signal_handlers__()
         self._stopping = False
-
-    def load_version(self) -> (str, int, int):
-        with open(file=self.VERSION_FILE, mode="r", encoding="UTF-8") as vers_file:
-            vers = str(vers_file.readline(0))
-
-        with open(file=self.CRYPT_TCP_PROTOCOL_VERSION_FILE, mode="r", encoding="UTF-8") as proto_vers_file_tcp:
-            crypt_tcp_proto_vers = int(proto_vers_file_tcp.readline(0))
-
-        with open(file=self.CRYPT_DB_PROTOCOL_VERSION_FILE, mode="r", encoding="UTF-8") as proto_vers_file_db:
-            crypt_db_proto_vers = int(proto_vers_file_db.readline(0))
-
-        return vers, crypt_tcp_proto_vers, crypt_db_proto_vers
 
     def _make_dirs(self):
         os.makedirs(self.conf["paths"]["logs_dir"], exist_ok=True)
