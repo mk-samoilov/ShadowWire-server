@@ -42,7 +42,7 @@ class PDB:
 		return conn
 
 	def close(self):
-		if self._conn is not None:
+		if self._conn:
 			try:
 				self._conn.close()
 			except Exception:
